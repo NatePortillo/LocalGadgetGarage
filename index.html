@@ -4,51 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LocalGadgetGarage</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
-            background-color: #f9ecd8;
+            background-color: #a6a6a6;
             display: flex;
             flex-direction: column;
             height: 100vh;
+            color: #333;
         }
         .banner {
-            background-color: #333;
+            background: linear-gradient(135deg, #1f4037, #99f2c8);
             color: white;
             text-align: center;
-            padding: 20px;
-            font-size: 24px;
+            padding: 30px;
+            font-size: 28px;
             font-weight: bold;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
         }
         .container {
             display: flex;
             flex-grow: 1;
+            gap: 20px;
+            padding: 20px;
         }
         .sidebar {
             width: 250px;
-            background-color: #333;
+            background: linear-gradient(135deg, #1f4037, #99f2c8);
             color: white;
-            padding: 20px;
-            box-sizing: border-box;
+            padding: 30px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+            border-radius: 10px;
         }
         .content {
             flex-grow: 1;
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
             text-align: center;
-            padding: 20px;
         }
         h1 {
             color: #333;
-            margin-top: 20px;
+            font-size: 32px;
+            margin-bottom: 20px;
         }
         a {
             color: white;
             text-decoration: none;
             display: block;
-            padding: 10px 0;
+            padding: 12px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease-in-out;
         }
         a:hover {
-            background-color: #575757;
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
         }
         .hidden {
             display: none;
@@ -93,6 +107,7 @@
             <a href="#" onclick="loadContent('products.html')">Products</a>
         </div>
         <div class="content" id="content">
+            <h1>Welcome to LocalGadgetGarage</h1>
         </div>
     </div>
 </body>
