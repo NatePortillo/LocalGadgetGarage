@@ -25,17 +25,43 @@
         h1, h2 {
             color: #1f4037;
         }
+        h2 {
+            font-size: 28px;
+            margin-top: 40px;
+            border-bottom: 2px solid #1f4037;
+            padding-bottom: 10px;
+        }
+        h3 {
+            font-size: 22px;
+            margin-top: 30px;
+            color: #1f4037;
+        }
         p {
             font-size: 18px;
             line-height: 1.8;
             color: #555;
+            margin-bottom: 20px;
         }
-        ul {
-            list-style-type: square;
-            padding-left: 20px;
+        ul, ol {
+            margin-bottom: 20px;
         }
-        ul li {
-            margin-bottom: 10px;
+        .toc {
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .toc a {
+            text-decoration: none;
+            color: #1f4037;
+            font-weight: bold;
+        }
+        .toc a:hover {
+            text-decoration: underline;
         }
         img {
             max-width: 100%;
@@ -61,10 +87,21 @@
 <body>
     <div class="content">
         <h1>LED Tow Hitch Cover</h1>
-        <section>
+        <nav class="toc">
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#project-overview">Project Overview</a></li>
+                <li><a href="#designing-the-pcb">Designing the PCB</a></li>
+                <li><a href="#designing-the-enclosure">Designing the Enclosure</a></li>
+                <li><a href="#future-improvements">Future Improvements</a></li>
+                <li><a href="#conclusion">Conclusion</a></li>
+            </ul>
+        </nav>
+        <section id="introduction">
             <h2>Introduction</h2>
             <p>Have you ever looked at your (presumably) empty tow hitch and wondered how you can make it more appealing?
-            Towing something would definitely solve that problem. But what about the 99% of the time you more-than-likely aren't towing?
+            Towing something would definitely solve that problem. But what about 99% of the time you more-than-likely aren't towing?
             An LED Tow Hitch Cover can help spice up your vehicle's rear end.
             </p>
             <img src="../images/images_towhook/intro_picture.png" alt="LED Towhook">
@@ -73,7 +110,7 @@
                 Your browser does not support the video tag.
             </video>
         </section>
-        <section>
+        <section id="project-overview">
             <h2>Project Overview</h2>
             <p>This Project Consists of 3 Main Components:</p>
             <ul>
@@ -82,26 +119,150 @@
                 <li><strong>4-pin Trailer Connector Compatibility:</strong> We will need to plug into most vehicle's towing lighting equipment</li>
             </ul>
         </section>
-        <section>
+        <section id="designing-the-pcb">
             <h2>Designing the PCB</h2>
+            <h3>Defining Requirements</h3>
             <p>Before designing the board, it is important to define the requirements. The board must:</p>
             <ol>
                 <li>Be powered by vehicle's 12V architecture</li>
+                <li>Comply with local, state, and federal laws</li>
                 <li>Be bright enough to see both in the day and night</li>
                 <li>Stay cool within the enclosure</li>
             </ol>
+            <h3>Powering with a vehicle's 12V architecture</h3>
+            <p>Once again, before designing the board it may be good practice to have an idea about how the board will be getting power.
+                A few options could be: Wiring from the 12V battery to the rear (requires harnessing), tapping a taillight harness (requires a splitter),
+                powering it externally (requires additional circuitry), plugging into trailer 4-pin plug (requires 4 pin connector). Many of these options
+                require either additional work or additional components where as plugging into a trailer 4-pin plug means you only need the male connector;
+                these tend to be anywhere from $1-$3 on Amazon, making it a good way to power the board. 
+                A typical 4-pin trailer connector diagram looks something like this:
+            </p>
+            <img src="../images/images_towhook/trailer_connector.jpg" alt="LED Towhook">
+            <p>
+                We can ignore the green and yellow wires since we will only want the LEDs on when the vehicle's DRLs are on.
+                This means we will only need two power pads on our board. One for the white wire (GND) and one for the brown wire (DRLs/12V).
+            </p>
+            <h3>Complying with local, state, and federal laws</h3>
+            <p>
+                Complying with laws really just means one thing. We need RED leds. This will have implications on some of our calculations
+                later on.
+            </p>
+            <h3>Being bright enough to see both in the day and night</h3>
+            <p>
+                How do you determine 'bright enough'? Before doing so, we have to know which Red LED we will be using. For this project we picked
+                a Foshan 25mA RED LED. The reason for this LED is its small package (0805) and it has the highest stock available on JLCPCB, making it
+                both cheap and plentiful. It is important to note that typically, you may want to order some LEDs in advance to play with the current, brightness, etc. BEFORE picking a specific LED.
+                However, this project was low-stakes enough to skip the LED testing phase.
+            </p>
+            <p>
+                Even with the LED in mind, this does not mean you have settled on 'bright enough'. Ultimately, the brightness of the LED will be determined
+                by how you 'drive it'. In other words, how much current will flow through it? In this LED's case, the forward current (If)
+                is 25mA. According to the manufacterer's chart below, driving the LED at this current will give us the highest Relative Luminous Intensity. So, for Version1
+                of the board I will want to drive it at that. 
+            </p>
+            <img src="../images/images_towhook/current_curve.png" alt="LED Towhook">
+            <p>
+                However, there is another important curve to pay attention to. That is the Forward Current Derating Curve. This graph is essentially telling us that as the
+                ambient temperature increases, you will want to drive your LEDs at a lower current to avoid overheating your LEDs. At 25mA, we are
+                assuming that our LEDs will be operating at about 25C, which will NOT be the case. We know this board will be in a fully sealed
+                enclosure (which means no airflow), so the best approach for us will be driving at 25mA THEN do real world testing at different conditions to seehow our LEDs fair. From 
+                there, we can determine the optimal driving current for our needs.
+            </p>
+            <img src="../images/images_towhook/derating_curve.png" alt="LED Towhook">
+            <p>
+                There is one more thing we will have to handle before creating our schematic. How many LEDs can we drive?
+                LEDs have something called a Forward Voltage. This is the amount of voltage needed to get current to flow across an LED.
+                It differs between LEDs and colors but for RED we can say it is a Vf of 2 (according to the manufacturer).
+                This means if we have 12V from our vehicle, we can put 6 LEDs in series. This is because each LED 'consumes' 2V from our total 12.
+                6 LEDs, however, is not enough to brighten our entire tow hook cover. What we can do is actually put more of 6 series LEDs in parallel
+                with our initial 6. This goes back to basic electronic fundamentals. In parallel, each branch recieves the same voltage from the power supply.
+                This means that we can add as many series of 6 LEDs in parallel, until we reach the required amount (assuming your power supply can support the total current).
+            </p>
+            <p>
+                Great! We are almost done. The final piece of the puzzle is our current limiting resistor. Remember when we said you can use
+                6 LEDs? That is not entirely true. Our Forward Voltage (Vf) can change due to manufaturing defects, ambient temperature, etc. So, 
+                to allow for that variability we can use 4 or 5 LEDs with a current limiting resistor at the end. Due to our very wide operating temperature
+                we will use 4 LEDs in series. We can calculate the current limiting resistor using this equation:
+            </p>
+            <img src="../images/images_towhook/current_equation.jpg" alt="LED Towhook">
+            <p>
+                Using this equation we can say (12V - 8V)/25mA = 160 Ohms. This means at the end of each of our 4 series LEDs we will need a 160 Ohm resistor.
+                This resistor will at a MINIMUM have to be able to safely dissipate 0.1W of power, or 100mW. I want to re-iterate that we are driving our LEDs a
+                little hard at 25mA but with real world testing we can find the If we actually want to run at. Given this, we can create our schematic:
+            </p>
+            <img src="../images/images_towhook/tow_schematic.png" alt="LED Towhook">
+            <p>
+                You may be asking, why did I use a 150 Ohm and 10 Ohm in series? This is not ideal but the simple reason is cost.
+                JLCPCB ,sadly, does not offer 160 Ohm resistors at their 'basic' tier meaning that if we use them, it will quickly drive up the price. So, using 150 and 10 is a reasonable compromise without
+                any destructive drawbacks. 
+            </p>
+            <h3>Stay cool within the enclosure</h3>
+            <p>
+                The final part of our PCB design is making sure it keeps cool. Driving the LEDs at a smaller amount of current is a reasonable way to do this
+                but we haven't done a real world brightness test. So, we can try some things in our PCB. Some basic things we can try are:
+            </p>
+            <ol>
+                <li>Make a big copper pour for our GND plane. This can act as a sort of thermal spreader.</li>
+                <li>Make wider power traces. Wider traces have lower electrical resistance, which means less power is lost as heat due to resistive losses.
+                    A useful equation is R = (p * L)/A
+                </li>
+                <li>Make mounting holes that can act for thermal relief if needed.</li>
+            </ol>
+            <p>
+                Given these, our V1 board turned our as follows:
+            </p>
+            <img src="../images/images_towhook/pcb_design.png" alt="LED Towhook">
+            <p>
+                I, of course, could have made the traces wider and made a few more optimizations in terms of components placement but 
+                this should work well for a V1. This design is ready to manufacture! I used JLCPCB for both the assembly and manufacturing.
+            </p>
+            <h3>The board!</h3>
+            <img src="../images/images_towhook/final_pcb.JPG" alt="LED Towhook">
+            <h3>Testing</h3>
+            <p>
+                Remember I said we would have to do some testing? What exactly does that entail? We recieved 5 boards from JLCPCB.
+                We can run them within our enclosure and measure the heat generated after a few hours.
+            </p>
+            <img src="../images/images_towhook/heat.JPG" alt="LED Towhook">
+            <img src="../images/images_towhook/mounted.JPG" alt="LED Towhook">
+            <p>
+                Sadly I didn't capture many pictures of this process but what I can tell you from real world testing is that 25mA in a full enclosure resulted in melted plastic.
+                Given this, with some trial and error, we can add a current limiting resistor at the input until we get a brightness and heat compromise that works well.
+            </p>
         </section>
-        <section>
-            <h2>Challenges Faced</h2>
-            <p>Netlify Test</p>
+        <section id="designing-the-enclosure">
+            <h2>Designing the Enclosure</h2>
+            <p>I want to keep the enclosure's CAD design private to avoid the design being stolen but some requirements it needed to satisfy were: </p>
+            <ol>
+                <li>Use PETG Carbon Fiber to avoid sun fading and sustain high heat.</li>
+                <li>Use the PCB mounting holes to air gap the board to avoid melted plastic (a second time).</li>
+                <li>Use magnets to allow for modular and hot-swappable designs.</li>
+                <li>Use a cap design that will be water proof, dust proof, etc.</li>
+            </ol>
         </section>
-        <section>
+        <section id="future-improvements">
             <h2>Future Improvements</h2>
-            <p>Test</p>
+            <p>The 3D printed design is very solid but there are a few improvements that can be made on the PCB side:</p>
+            <ul>
+                <li> Wider power traces! </li>
+                <li> Better component placement. Currently, some spots on the board are very cool and some portions have hotspots </li>
+                <li> Larger current limiting resistor value. Currently, some resistors are wired in-line with the 4-pin harness to lower the 25mA forward current.
+                    This isn't ideal and we can easily change our current limiting resistor equation to 15-20mA after our real-world testing.
+                    This means increasing our 160 Ohm resistance to anywhere from 200-260 Ohms.
+                </li>
+                <li>
+                    Ambient Derating! This still isn't exactly where I would like it to be at, especially for an automotive application in California. We get up to 110F
+                    days in the summer. However, I want to note that because our 4 pin connector only relies on DRLs (auto DRL are usually not on during the day), chances are the board will be on mostly at night (meaning it is cooler).
+                </li>
+            </ul>
         </section>
-        <section>
+        <section id="conclusion">
             <h2>Conclusion</h2>
-            <p>Test</p>
+            <p>After all is said and done, we get a cool, robust, tow hook cover that lights up!</p>
+            <video width="640" height="360" controls>
+                <source src="../images/images_towhook/towhook_ex.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </section>
     </div>
 </body>
