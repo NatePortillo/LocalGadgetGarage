@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalGadgetGarage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .banner {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .container {
+            display: flex;
+            flex-grow: 1;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .content {
+            flex-grow: 1;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            margin-top: 20px;
+        }
+        a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px 0;
+        }
+        a:hover {
+            background-color: #575757;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        function loadContent(page) {
+            fetch(page)
+                .then(response => response.text())
+                .then(data => {
+                    document.querySelector('.content').innerHTML = data;
+                })
+                .catch(error => console.error('Error loading the page:', error));
+        }
+    </script>
+</head>
+<body>
+    <div class="banner">LocalGadgetGarage</div>
+    <div class="container">
+        <div class="sidebar">
+            <a href="#" onclick="loadContent('home.html')">Home</a>
+            <a href="#" onclick="loadContent('about.html')">About Me</a>
+            <a href="#" onclick="document.getElementById('blog-list').classList.toggle('hidden')">Blogs & Creations</a>
+            <div id="blog-list" class="hidden">
+                <a href="#" onclick="loadContent('blogs/blog1.html')">Blog 1</a>
+                <a href="#" onclick="loadContent('blogs/blog2.html')">Blog 2</a>
+            </div>
+            <a href="#" onclick="loadContent('products.html')">Products</a>
+        </div>
+        <div class="content">
+        </div>
+    </div>
+</body>
+</html>
