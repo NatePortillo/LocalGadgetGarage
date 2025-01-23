@@ -132,6 +132,7 @@
                 because JLCPCB decided to designate many of these as 'Extended Parts' ($) AND as 'Standard' parts ($$$). To narrow down my choices, I knew I wanted an RGB LED with a built-in IC. This means I won't have to worry about
                 managing current like I had to with the tow hitch cover. I also didn't need any high current LEDs as those tend to be more work, especially if they require a heat sink. This narrowed down my choices significantly and I settled on
                 SK6812 series LED. This one in particular was a 'mini'; I appreciated the smaller footprint.
+                <img src="../images/images_lamp/rgb_led.png" alt="RGB LED">
             </p>
             <h2>Microcontroller</h2>
             <p>For the microcontroller, I knew I was going to go with an MCU from ST's line-up. This is mainly because I am very familiar with their microcontroller and tools. Since the SK6812 LEDs require PWM it was clear I would, at a minimum,
@@ -140,24 +141,42 @@
                 I would get a higher pin package. Additionally, the low RAM and Flash size(32K/8K) will have you making sure every variable and line of code in your firmware needs to be there.
             </p>
             <h2>What Else?</h2>
-            <p>Given these components we have a few power requirements:</p>
-            <img src="../images/images_lamp/wall_wart.png" alt="Wall Wart">
+            <p>Given these components we can map a high level overview of our system:</p>
+            <img src="../images/images_lamp/block_diagram.png" alt="Block Diagram">
+
+            <h2>The Schematic</h2>
+            <p>From this block diagram, we can extrapolate our system's design.</p>
+            <img src="../images/images_lamp/lamp_schematic.png" alt="Lamp Schematic">
+            <p>Some key points of the schematic: </p>
+            <ol>
+                <li> Following the LED's datasheet, each individual needs a decoupling capacitor. This requirement is iffy but caps are so cheap, it was not a difficult addition. </li>
+                <li> We include the design for an external clock but it doesn't make the end design. The pads are nice to have if we need a more accurate oscillator in the future. </li>
+                <li> Header pins are included for ST-Link (Firmware Flashing). So, we need to expose those pins for SWDIO, SWCLK, RESET, etc. </li>
+                <li> We use a switching regulator and then an LDO. The switching regulator (Buck) is better for stepping down those larger voltage differences while dealing with larger currents (3A).
+                    Once converted to 5V a simple LDO can save us space, complexity, and COST. These are much cheaper than a buck and should be able to easily handle the current/power requirements of the STM32G0.
+                </li>
+                <li> Don't forget, we need the level shifter! The LED's minimum logic voltage is (0.7 * Vdd). This means the minimum is technically 3.5V. However, many reports onlinw of the sister product line of SK LEDs mention that some don't play
+                    nice with lower than 4V. So, we level shift our MCU's 3.3V to 5V so that we don't face any problems later on.
+                </li>
+                <li> We also leave exposed pads to have flexability with the button that will change LED effects.</li>
+            </ol>
+            <h2>The PCB</h2>
+            <p>I want to clarify that although it isn't shown, you really should confirm that the pins of your microcontroller are compatable with the schematic you are creating. For example, the STM32G0 only allows SWDIO from
+                Pin 18. Because this is a low pin package, some other peripherals ALSO happen to apply to Pin 18 (meaning its SWDIO or it is IIC, for example). It's important to actually check which peripherals you will need and find the pin you will be using accordingly, before
+                connecting your pins on the schematic.
+            </p>
+            <img src="../images/images_lamp/lamp_pcb.png" alt="Lamp Schematic">
+            <p>There is nothing inherently difficult about this design. I kept my decoupling caps close, spaced my LEDs as needed, gave wider traces to my power nets, and placed my switching regulator components as best as I could
+                according to the recommendation of the manufacturer. This concludes our PCB design!
+            </p>
+        </section>
+        <section id="programming-firmware">
+            <h2>Pin Selection</h2>
+            <p>The 3D printed design is very solid but there are a few improvements that can be made on the PCB side:</p>
         </section>
         <section id="future-improvements">
-            <h2>Future Improvements</h2>
+            <h2>Pin Selection</h2>
             <p>The 3D printed design is very solid but there are a few improvements that can be made on the PCB side:</p>
-            <ul>
-                <li> Wider power traces! </li>
-                <li> Better component placement. Currently, some spots on the board are very cool and some portions have hotspots </li>
-                <li> Larger current limiting resistor value. Currently, some resistors are wired in-line with the 4-pin harness to lower the 25mA forward current.
-                    This isn't ideal and we can easily change our current limiting resistor equation to 15-20mA after our real-world testing.
-                    This means increasing our 160 Ohm resistance to anywhere from 200-260 Ohms.
-                </li>
-                <li>
-                    Ambient Derating! This still isn't exactly where I would like it to be at, especially for an automotive application in California. We get up to 110F
-                    days in the summer. However, I want to note that because our 4 pin connector only relies on DRLs (auto DRL are usually not on during the day), chances are the board will be on mostly at night (meaning it is cooler).
-                </li>
-            </ul>
         </section>
         <section id="conclusion">
             <h2>Conclusion</h2>
