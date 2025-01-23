@@ -131,15 +131,16 @@
             <p>RGB LEDs are everywhere and very easy to find. However, I was looking at JLCPCB to do the assembly of this board for me. This, once again, meant I was a bit limited in the components I could pick. Even moreso for the LEDs
                 because JLCPCB decided to designate many of these as 'Extended Parts' ($) AND as 'Standard' parts ($$$). To narrow down my choices, I knew I wanted an RGB LED with a built-in IC. This means I won't have to worry about
                 managing current like I had to with the tow hitch cover. I also didn't need any high current LEDs as those tend to be more work, especially if they require a heat sink. This narrowed down my choices significantly and I settled on
-                SK6812 series LED. This one in particular was a 'mini'; I appreciated the smaller footprint.
-                <img src="../images/images_lamp/rgb_led.png" alt="RGB LED">
+                SK6812 series LED.
             </p>
+            <img src="../images/images_lamp/rgb_led.png" alt="RGB LED">
             <h2>Microcontroller</h2>
             <p>For the microcontroller, I knew I was going to go with an MCU from ST's line-up. This is mainly because I am very familiar with their microcontroller and tools. Since the SK6812 LEDs require PWM it was clear I would, at a minimum,
                 need the MCU to have some on-board timers. I settled on ST's STM32G0F6. This is considered ST's 'Budget Line'. The G0 has basic peripherals like I2C, SPI, UART, and a speedy enough 64Mhz clock. This was more than enough for my application
                 and future applications. In hindsite, the F6 in particular (once taking into account an external clock, SWD Wire, Reset Wire, etc.) runs out of pins really quick. It makes a great application-specific MCU, but if you are looking for upgradability,
                 I would get a higher pin package. Additionally, the low RAM and Flash size(32K/8K) will have you making sure every variable and line of code in your firmware needs to be there.
             </p>
+            <img src="../images/images_lamp/mcu_details.png" alt="RGB LED">
             <h2>What Else?</h2>
             <p>Given these components we can map a high level overview of our system:</p>
             <img src="../images/images_lamp/block_diagram.png" alt="Block Diagram">
