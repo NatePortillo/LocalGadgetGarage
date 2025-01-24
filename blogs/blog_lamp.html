@@ -173,7 +173,41 @@
         </section>
         <section id="programming-firmware">
             <h2>Pin Selection</h2>
-            <p>The 3D printed design is very solid but there are a few improvements that can be made on the PCB side:</p>
+            <p>As I mentioned earlier, ideally you would do this before you start designing. I am just placing the pin selection here since it makes the design easy to follow.</p>
+            <img src="../images/images_lamp/pinout.png" alt="Pinout">
+            <p>So what's going on here? We set our SWDIO, SWCLK, and Timer (PWM) pins. We also add an additional pin, configured for an interrupt so that we can use a button to change effects. Lastly,
+                we have an output pin to drive an LED and make sure power/functionality is there.
+            </p>
+            <h2>LED Driving (PWM)</h2>
+            <p>
+                The SK6812 line of LEDs requires prices PWM at the logic input in order to be able to program colors and effects. According to the datasheet, the minimum symbol period is 1.2uS. If we convert 
+                this to frequency (1/T) we get approximately 833kHz. Given this, we can calculate our Counter Period for our timer. Our clock is running at 16Mhz, so we can divide this by 833Khz and get approx. 19-1 for our ARR. If we wanted a application-specific
+                PWM duty cycle we could set the CCR. For example, a CCR of 9 would give us a 50% d.c (ARR/CCR). For the SK6812, we need a bit 0 for .30 (6/18) and bit 1 for approximately .67 (12/18).
+
+            </p>
+            <h2>Timer DMA</h2>
+            <p>
+                I would like to say I created the LED effects myself but the trush is, LED effects can be very tedious to make once you get beyond basic Red, Blue, Green. So, I adapted code from this article as the basis for my effects creation.
+                If you want to read more about how to set up DMA (Direct Access Memory) for you timer to be able to get the throughput nessesary for these intensive effects feel free to read this guide directly!
+                https://www.thevfdcollective.com/blog/stm32-and-sk6812-rgbw-led
+            </p>
+            <h2>Button Debouncing</h2>
+            <p>
+                Remember I said we needed to switch through the effects somehow? That is where our button comes in. To initially set it up, you have to make sure you configure you pin to trigger on external interrupts.
+                Once that is configured you can write your code within a GPIO callback:
+            </p>
+            <img src="../images/images_lamp/interrupt.png" alt="Interrupt">
+            <p>
+                Normally, you want to keep your interrupts as short as possible. The shorter, the better. You are interrupting your code in order to handle this request! However, with buttons, especially ones that will be soldered by hand,
+                you can get a lot of mechanical noise. There are hardware solutions you can impliment using capacitors but I opted for a software solution. When we press a button, we may get a click and a ton of quick little oscillations after the fact. 
+                So, by ignoring those small oscillations, we can get a solid click. In this code, we essentially 'timestamp' our current time and the time the button was last pressed.
+                If that time is less than 500ms, we ignore it. If it is greater, we can assume it was a solid press(and not noise) and continue to change effects. This 500ms time was chosen based on trial an error and could change depending on the button. 
+            </p>
+            <p>
+                Within this code we also handle a sleep variable, used to put our MCU into a lower power state and we also control our color switching case statement within the main loop. Again, we do this with simple variables because we want to keep our interrupt
+                as short as possible! Lastly, in the main loop, we handle our effects with a case statement and include our low power modes.
+            </p>
+            <img src="../images/images_lamp/main.png" alt="Main">
         </section>
         <section id="future-improvements">
             <h2>Pin Selection</h2>
