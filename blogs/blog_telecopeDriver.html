@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LED Towhook Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background-color: #a6a6a6;
+            padding: 40px;
+            color: #333;
+        }
+        .content {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #1f4037;
+        }
+        h2 {
+            font-size: 28px;
+            margin-top: 40px;
+            border-bottom: 2px solid #1f4037;
+            padding-bottom: 10px;
+        }
+        h3 {
+            font-size: 22px;
+            margin-top: 30px;
+            color: #1f4037;
+        }
+        p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        ul, ol {
+            margin-bottom: 20px;
+        }
+        .toc {
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .toc a {
+            text-decoration: none;
+            color: #1f4037;
+            font-weight: bold;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 20px;
+            background: #1f4037;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease-in-out;
+        }
+        .back-link:hover {
+            background: #99f2c8;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Motorized Telescope Stand</h1>
+        <nav class="toc">
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#project-overview">Project Overview</a></li>
+                <li><a href="#picking-components">Picking Components</a></li>
+            </ul>
+        </nav>
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p>My brother recently got a telescope and we have been having a blast with it. It isn't a particularly expensive one; totaled out to about $350 dollars. You can see Jupter's big red dot and Saturn's rings. It is absolutely stunning.
+                However, one thing you quickly disocver is how tiring and tedious it can be aligning your telescope on the planet <i>justttt</i> right. Once you do, the planet has quickly moved out of frame! In an effort to resolve this issue quickly,
+                I searched the internet for cheap motorized platforms to move the telescope automatically instead of manually. That is where the biggest problem arose. They can be pricey. So, I sought to create a motorized telescope stand on a budget with
+                an autonamous upgrade path for the future!
+            </p>
+        </section>
+        <section id="project-overview">
+            <h2>Project Overview</h2>
+            <p>This project will be a fun change from my previous projects. We will be dealing in eletrical, mechanical, and electro-mechanical design. With this in mind, we will have to focus on:</p>
+            <ul>
+                <li><strong>Picking proper components: </strong> We will need precise motors and a beefy microcontroller for future upgrade paths.</li>
+                <li><strong>Portability; Integration Shield (PCB): </strong> I'd like to integrate all these components into a tight package since this stand will have to be portable.</li>
+                <li><strong>Good Mechanical Design: </strong> So that this stand can work well, we will need robust mechanical design for precision, stability, and portability.</li>
+            </ul>
+        </section>
+        <section id="picking-components">
+            <h2>Picking Components</h2>
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid #ddd;">
+                <caption>Components Details</caption>
+                <tr style="background-color: #f4f4f4;">
+                    <th style="border: 1px solid #ddd; padding: 10px;">Components</th>
+                    <th style="border: 1px solid #ddd; padding: 10px;">Description</th>
+                    <th style="border: 1px solid #ddd; padding: 10px;">Why This Component</th>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 1px;">Teensy 4.0</td>
+                    <td style="border: 1px solid #ddd; padding: 1px;">The Teensy 4.0 has...</td>
+                    <td style="border: 1px solid #ddd; padding: 1px;">This is great because...</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;">NEMA 17 27:1 Motors</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">These motors have...</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">These will be great because I am testing to see how this text apprears for the table. Depending on how it appears is how I will see my work appear.</td>
+                </tr>
+            </table>            
+        </section>
+    </div>
+</body>
+</html>
