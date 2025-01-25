@@ -93,6 +93,7 @@
                 <li><a href="#introduction">Introduction</a></li>
                 <li><a href="#project-overview">Project Overview</a></li>
                 <li><a href="#picking-components">Picking Components</a></li>
+                <li><a href="#pcb-shield">Creating the Shield (PCB)</a></li>
             </ul>
         </nav>
         <section id="introduction">
@@ -157,6 +158,26 @@
                 </td>
             </tr>
             </table>            
+        </section>
+        <section id="pcb-shield">
+            <h2>Creating the Shield (PCB)</h2>
+            <p>The neat thing about this project's component selection is that we don't need to source JLCPCB components. Many of the boards already did that for us. So, we need to integrate them together. This board will be used
+                mainly to connect these components together in a compact way while also helping distribute power in a consolidated way.
+            </p>
+            <p>This block diagram helps break down the main component connection a little bit.</p>
+            <img src="../images/images_motor/block_diagram.jpg" alt="Block Diagram">
+
+            <p>Does it make sense? Great! This leads us to our schematic. This might look a little different. Remember, we are dealing with nets. I.e signals, voltages, etc all tied together through connectors, headers, and pins.</p>
+            <p>With that in mind, we can create the schematic.</p>
+            <img src="../images/images_motor/schematic.png" alt="Schematic">
+
+            <p> You may notice a few differences. I added some LEDs to confirm things are working properly. Some dip switches help us select the step size we want for our motor drivers. Next, we have the addition of two electrolytic
+                capacitors. The datasheet of the A4988 Stepper Motor Driver lists these decoupling capacitors are nessessary to help filter out noise from the power supply. We also have an additional pins from the Teensy 4.0 exposed with 
+                header pins to help in our future upgrade path and for ease of prototyping as needed. Lastly, we have a spot for a fuse so that we protect our sensitive components from being burnt.
+            </p>
+            <p> You also may be wondering why I didn't list out specific components for the dip switches, leds, capacitors, fuse, etc. I designed this board with through-hole components in mind and many of these components I will size and pick 
+                from scraps I have laying around my workshop (size correctly, of course). Keep in mind you can't just solder any capacitor to the board, for example. You have to size it correctly, preferrably with a low ESR, properly voltage derated cap.
+            </p>
         </section>
     </div>
 </body>
