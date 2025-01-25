@@ -123,14 +123,39 @@
                 </tr>
                 <tr>
                     <td style="border: 1px solid #ddd; padding: 1px;">Teensy 4.0</td>
-                    <td style="border: 1px solid #ddd; padding: 1px;">The Teensy 4.0 has...</td>
-                    <td style="border: 1px solid #ddd; padding: 1px;">This is great because...</td>
+                    <td style="border: 1px solid #ddd; padding: 1px;">The Teensy 4.0 is a ARM Cortex-M7 at 600 MHz based development board. </td>
+                    <td style="border: 1px solid #ddd; padding: 1px;">I like this board because it is compact, extremely powerful (good for future upgrades) but most importantly it supports a wideee range of software. This includes Arduino IDE, Micro Python, Visual Micro, etc.
+                        This is extremely important in case we want to use open source tracking software or star-gazer software in the future. 
+                    </td>
                 </tr>
                 <tr>
                     <td style="border: 1px solid #ddd; padding: 10px;">NEMA 17 27:1 Motors</td>
-                    <td style="border: 1px solid #ddd; padding: 10px;">These motors have...</td>
-                    <td style="border: 1px solid #ddd; padding: 10px;">These will be great because I am testing to see how this text apprears for the table. Depending on how it appears is how I will see my work appear.</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">These motors come with a 48mm body and 1.68A rated current, integrated a planetary gearbox of 26.85:1 gear ratio. </td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">These excel at low speed, high torque applications. They are also compact, making it perfect for this application.
+                        The step angle of the stepper motor alone is 0.067 degrees making it very precise. Lastly, the added planetary gearbox greatly improves our torque from 52Ncm -> 5Nm.
+                    </td>
                 </tr>
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 10px;">A4988 Stepper Motor Driver</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">The A4988 stepper motor driver has an output drive capacity of up to 35V and ±2A.</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">These are the go-to stepper motor driver for applications like CNCs and 3D Printing. If you want precise movement in an integrated package, this
+                        the driver to get. It fits our requirements perfectly as we won't be driving higher than 12V, 2A. Additionally, these come with easy control pins (meaning easy programming) and heat sinks to prevent
+                        overheating.
+                </tr>
+                <tr>
+                    </td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">MPM3610 5V Buck Converter</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">MPM3610 is a marvel, taking up to 21V input and providing a 5V output with up to 1.2A current</td>
+                    <td style="border: 1px solid #ddd; padding: 10px;">This will be used to power our Teensy 4.0. I wanted a reliable, clean power source as our Teensy will be powering our motor drivers.
+                    </td>
+                </tr>
+                <tr>
+                </td>
+                <td style="border: 1px solid #ddd; padding: 10px;">Analog 2-axis Thumb Joystick </td>
+                <td style="border: 1px solid #ddd; padding: 10px;">The thumbstick is an analog joystick - more accurate and sensitive than just 'directional' joysticks - with a 'press in to select' button.</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">Sadly, V1 of this project can't be a fully autonomous beast, so this joystick will be used to manually control the motors.
+                </td>
+            </tr>
             </table>            
         </section>
     </div>
