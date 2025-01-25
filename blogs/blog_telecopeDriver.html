@@ -94,6 +94,7 @@
                 <li><a href="#project-overview">Project Overview</a></li>
                 <li><a href="#picking-components">Picking Components</a></li>
                 <li><a href="#pcb-shield">Creating the Shield (PCB)</a></li>
+                <li><a href="#programming">Programming the Teensy</a></li>
             </ul>
         </nav>
         <section id="introduction">
@@ -178,6 +179,22 @@
             <p> You also may be wondering why I didn't list out specific components for the dip switches, leds, capacitors, fuse, etc. I designed this board with through-hole components in mind and many of these components I will size and pick 
                 from scraps I have laying around my workshop (size correctly, of course). Keep in mind you can't just solder any capacitor to the board, for example. You have to size it correctly, preferrably with a low ESR, properly voltage derated cap.
             </p>
+
+            <h2>Layout and PCB</h2>
+            <p> Since this is an on-going project, I have yet to recieve the actual boards so pictures of those will be updated later. However, I do have some 3D models that look as follows: </p>
+            <img src="../images/images_motor/pcb_model.png" alt="PCB Model">
+            <img src="../images/images_motor/pcb_traces.png" alt="PCB Traces">
+
+            <p> As I mentioned, this is an integration board, so everything is meant to slot into place. Looking at the design you may notice is differs a bit from my previous designs.</p>
+            <ol> 
+                <il> I forgot mounting holes! This is a big oversight for V1 but I can make do regardless by compensating for this in the enclosure</il>
+                <il> We keep our standard GND plane for this two layer boards. However, since we are dealing with high currents I wanted to create copper pours for our power plane where possible</il>
+                <il> Along with the copper pours, I kept my traces thick to ensure I can handle the nessessary current. </il>
+            </ol>
+        </section>
+        <section id="programmingd">
+            <h2>Programming the Teensy</h2>
+            <p>Coming soon!!</p>
         </section>
     </div>
 </body>
