@@ -191,10 +191,58 @@
                 <il> We keep our standard GND plane for this two layer boards. However, since we are dealing with high currents I wanted to create copper pours for our power plane where possible</il>
                 <il> Along with the copper pours, I kept my traces thick to ensure I can handle the nessessary current. </il>
             </ol>
+
+            <h2>Built Boards</h2>
+            <p> The boards finally arrived and we were able to build and assemble! Since all these parts were through-hole, soldering this board was a blast and meant good $$$ savings instead of having JLCPCB assemble it. </p>
+            <p> The RAW board. If you look closely you can see bigger copper pours for the power plane on this board compared to previous projects: </p>
+            <img src="../images/images_motor/pcb.png" alt="PCB">
+
+            <p>The assembled board: </p>
+            <img src="../images/images_motor/built_pcb.JPG" alt="PCBA">
+
+            <p>Probably my least favorite part, was creating the rest of the harnessing. What this means is adding male JST connectors to our Joystick and Motors. I quickly learned how TEDIOUS those little JST pins can be. </p>
+            <img src="../images/images_motor/all_comps.JPG" alt="Harnessing PCB">
+
+            <p> Now that are board is built up and we confirm that it all turns on, we can move on to programming! Luckily, we added our two debug power LEDs so if those light up, we know everything is working. </p>
         </section>
-        <section id="programmingd">
+        <section id="programming">
             <h2>Programming the Teensy</h2>
-            <p>Coming soon!!</p>
+            <p>Before writing any code, we have to decide how we want to actually program it. We do have a few options.. </p>
+            <p>We can use Arduino IDE which has a vast library support. Arduino IDE is great for prototyping but I am honestly not
+                a fan of Arduino's language. You can compile in C and C++ but the toolchain set-up seems to be like a huge hassle and we
+                don't get any advantages of picking the Teensy. To do this, I would have chosen a barebones STM32 product instead. So, that leaves
+                us with CircuitPython! Although I am most familiar with C in an embedded environment, I have use quite a bit of Python in everyday
+                development. This make using CircuitPython a matter of learning a few new libraries. On top of that, I really like that we can still take
+                advantage of the openness of the platform. This is going to be very important for when we inevtiable have to connect the Teensy 4.0 to 
+                stargazing apps like SkySafari for automatic pointing.
+            </p>
+            <p> With that being said, here is the code. The V1 code is quite simple since we want simple motor-moving-telescope functionality to start.
+                This means: I give X-Y commands on the joystick, the X-Y stepper motors move accordingly. You'll also notice we won't have to pay too much attention
+                to the steps. Since we added DIP switches during the hardware design portion of the project, we can make these changes on the board to increase/decrease 
+                our resolution.
+            </p>
+            <p>The Code: </p>
+            <img src="../images/images_motor/pin_def.png" alt="Pin Definitions">
+            <p>Our pin definitions were quite easy. These were, obviously, defined by our hardware first. So, it is a matter
+                of following our schematic. You may notice that we use mostly digital pins for the 2 motors driver. However, the joystick
+                requires analog input pins. This is because the signals being returns are voltages, manipulated by a potentiometer. 
+                We also set an additional pin from our joystick as a digital pin. This is a push-down function that we will eventually use 
+                for calibration and homing.
+            </p>
+            <img src="../images/images_motor/while_code.png" alt="Main Code">
+            <p>Our main code is very straight forward at the moment and will definitely use some optimization as the project progresses.
+                With each loop, we poll our joystick values. Our ADC has an input range of about (0 - 65535). This is because we have a 16-bit ADC
+                resolution; this translates to (2^16 - 1). It would be advantageous to apply different steps to the motors per ranges so that we can have speed
+                control but at the moment we only assign thresholds. I.e Up a certain amount is 'full-speed'. Given we meet that threshold, in a certain direction,
+                we assign whether that movement is CW or CCW. 
+            </p>
+            <p>
+                Once we know which direction we are moving in, we generate our step pulses. This was a new experience for me. In previous projects, if I want to control a motor,
+                I set up PWM. PWM essentially is functioning as on and off at a certain duty cycle. However, these motor drivers did not seem to play well with any PWM outputs I tried.
+                I have to further debug, but until then, I switched over to bit banging. This application is simple enough that there are no immediate performance issues. We essentially
+                send 200 'steps' (this is gathered from Nema 17 motor datasheet). Each step is a pulse send for a certain period. So we change our digital STEP pin to on, wait a delay,
+                then to off. Our step frequency comes out to about 500 Hz. With a total delay of 2ms, we calculate the frequency at (1/.002). With this, we have stepper motors that move!
+            </p>
         </section>
     </div>
 </body>
